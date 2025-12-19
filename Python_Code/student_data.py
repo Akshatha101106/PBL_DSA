@@ -11,6 +11,7 @@ from .Export_data import (
 import json   
 import pandas as pd
 import re 
+import subprocess
 
 print(json.__file__)
 
@@ -49,14 +50,14 @@ def process_all_resume_data(user_pdf):
         "Skills": extract_skills,
         #"Education": extract_education
     }
-    file_path = "C:/research/PBL_DSA/parse_resume_data_to_cpp.json"
+    file_path = "C:/PBL_DSA/parse_resume_data_to_cpp.json"
     
     with open(file_path, "w") as json_file:
         json.dump(resume_dict, json_file, indent = 4)
 
     print("JSON file created successfully.")
      # You can process company_dict as needed
-    file_path_company = "C:/research/PBL_DSA/company_job_data_to_cpp.json"
+    file_path_company = "C:/PBL_DSA/company_job_data_to_cpp.json"
     company_list , qualification, skill_list, preferred_Skill, role_list = extract_company_data()
 
     company_data = []
@@ -74,14 +75,15 @@ def process_all_resume_data(user_pdf):
     with open(file_path_company , "w") as json_file:
             json.dump(company_data , json_file , indent =4 )
 
-    return extract_skills
+    return extract_name
 
 
 def extract_company_data():
-    df = pd.read_excel('C:/research/PBL_DSA/company_job_data_list.xlsx')
+    df = pd.read_excel('C:/PBL_DSA/company_job_data_list.xlsx')
     company_list = df['Company'].tolist()
     qualification = df['Qualification'].tolist()
     skill_list = df['Skills'].tolist()
     preferred_Skill = df['Preferred Skills'].tolist()
     role_list = df['Role'].tolist()
     return company_list , qualification, skill_list, preferred_Skill, role_list
+
