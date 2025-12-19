@@ -1,14 +1,12 @@
 #include <iostream>
-using namespace std;
+#include <string>
+#include <algorithm> 
+#include "json.hpp" 
 
-void sum_of(int a , int b)
-{
-    int sum = a+b;
-    cout<<"sum="<<sum<<endl;
-}
+using namespace std;
+using json = nlohmann::json;
 
 int main()
 {
-    cout<<"hi"<<endl;
-    sum_of(3,8);
+    cout<<"JSON parsed"<<endl;
 }
