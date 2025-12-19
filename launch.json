@@ -20,6 +20,15 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        },
+        {
+           "name": "Python: student_data (module)",
+    "type": "python",
+    "request": "launch",
+    "module": "Python_Code.student_data",
+    "cwd": "${workspaceFolder}",
+    "console": "integratedTerminal"
+}
     ]
 }
+
