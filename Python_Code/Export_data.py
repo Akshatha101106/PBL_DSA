@@ -1,9 +1,12 @@
 import pdfplumber
 import re
 from typing import Dict, List
+
 from .database import (
     create_comprehensive_skill_database,
-    format_skill_name
+    format_skill_name,
+    extract_branch_from_resume_lines,
+    QUALIFICATION_KEYWORDS 
 )
 
 def extract_data_from_pdf(pdf_path):
@@ -247,3 +250,50 @@ def cleanup_and_format(categorized: Dict[str, List[str]]) -> Dict[str, List[str]
             cleaned[category] = unique
     
     return cleaned
+
+def list_the_skills(text):
+    if not text :
+        return []
+    # Split by commas, semicolons, and new lines
+    return [s.strip() for s in text.split(',') if s.strip()]
+
+def clean_sentence_in_prefered_skills(text_data):
+    """
+    Clean the preferred skills text by removing unwanted characters and formatting.
+    """
+    if not text_data :
+        return " "
+    skills = [] #empty list to store cleaned skills
+    text_data.lower() #convert to lower case
+    # Remove unwanted characters using regex
+    matches = re.findall(r"\((.*?)\)", text_data)
+    # 2. Split skills inside brackets
+    for match in matches:
+        parts = re.split(r"[\/,]", match)
+        for p in parts:
+            p = p.strip()
+            if p:
+                skills.append(p)
+
+    return list(set(skills))  # remove duplicates
+
+def extract_branch_from_resume(resume_lines):
+    return extract_branch_from_resume_lines(resume_lines)
+
+def extract_branch_from_qualification(text):
+    """
+    Extract branch names like Computer Science, IT, AI ML from qualification text.
+    """
+    if not text :
+        return ["Any"]
+
+    text = text.lower()
+
+    found = set()
+
+    for key, normalized in QUALIFICATION_KEYWORDS.items():
+        # match whole phrases safely
+        if re.search(r"\b" + re.escape(key) + r"\b", text):
+            found.add(normalized)
+
+    return list(found) if found else ["Any"]

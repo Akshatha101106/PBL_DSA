@@ -1,4 +1,5 @@
 from typing import Dict
+import re
 
 def create_comprehensive_skill_database() -> Dict[str, Dict]:
     """
@@ -41,7 +42,12 @@ def create_comprehensive_skill_database() -> Dict[str, Dict]:
         'networking': {'category': 'Soft Skills', 'variations': ['networking'], 'type': 'soft skill'},
         'collaboration': {'category': 'Soft Skills', 'variations': ['collaboration'], 'type': 'soft skill'},
         'analytical skills': {'category': 'Soft Skills', 'variations': ['analytical skills', 'analytical','analytics'], 'type': 'soft skill'},
-    
+        'Devops': {'category': 'Soft Skills', 'variations': ['devops'], 'type': 'soft skill'},
+        'vuew': {'category': 'Soft Skills', 'variations': ['vuew'], 'type': 'soft skill'},
+        'Django': {'category': 'Soft Skills', 'variations': ['Django'], 'type': 'soft skill'},
+        'Express.js': {'category': 'Soft Skills', 'variations': ['Express.js','Express'], 'type': 'soft skill'},
+        'Selenium': {'category': 'Soft Skills', 'variations': ['Selenium'], 'type': 'soft skill'},
+
         
         # Web Technologies
         'html': {'category': 'Web Technologies', 'variations': ['html', 'html5'], 'type': 'web'},
@@ -123,6 +129,14 @@ def create_comprehensive_skill_database() -> Dict[str, Dict]:
         'power bi': {'category': 'Data & Analytics', 'variations': ['power bi', 'powerbi'], 'type': 'analytics'},
         'tableau': {'category': 'Data & Analytics', 'variations': ['tableau'], 'type': 'analytics'},
         'excel': {'category': 'Data & Analytics', 'variations': ['excel', 'microsoft excel'], 'type': 'analytics'},
+        'Microsoft Power BI': {'category': 'Data & Analytics', 'variations': ['microsoft power bi'], 'type': 'analytics'},
+        'word': {'category': 'Data & Analytics', 'variations': ['word', 'microsoft word'], 'type': 'analytics'},
+        'google analytics': {'category': 'Data & Analytics', 'variations': ['google analytics'], 'type': 'analytics'},
+        'powerpoint': {'category': 'Data & Analytics', 'variations': ['powerpoint', 'microsoft powerpoint'], 'type': 'analytics'},
+        # Machine Learning & AI
+        'machine learning': {'category': 'Machine Learning & AI', 'variations': ['machine learning', 'ml'], 'type': 'ml'},
+        'deep learning': {'category': 'Machine Learning & AI', 'variations': ['deep learning', 'dl'], 'type': 'ml'},
+        'computer vision': {'category': 'Machine Learning & AI', 'variations': ['computer vision', 'cv'], 'type': 'ml'},
         
         # Others
         'data structures': {'category': 'Computer Science Fundamentals', 'variations': ['data structures', 'dsa'], 'type': 'cs'},
@@ -214,3 +228,114 @@ def format_skill_name(skill: str, skill_db: Dict) -> str:
     }
     
     return formatting_map.get(skill, skill.title())
+
+QUALIFICATION_KEYWORDS = {
+    # --- Core CS ---
+    "computer science": "Computer Science",
+    "computer science engineering": "Computer Science",
+    "cse": "Computer Science",
+    "bcs": "Computer Science",
+    "b.sc cs": "Computer Science",
+    "b.sc computer science": "Computer Science",
+    "bachelor of computer application": "BCA",
+    "bca": "BCA",
+    "Master of Computer Applications": "MCA",
+    "mca": "MCA",
+    "any graduate": "Any Graduate",
+    "any post graduate": "Any Post Graduate",
+
+
+    # --- IT / Information Science ---
+    "information technology": "Information Technology",
+    "information science": "Information Science",
+    "information science engineering": "Information Science",
+    "ise": "Information Science",
+
+    # --- AI / ML / DS ---
+    "artificial intelligence": "AI ML",
+    "ai": "AI ML",
+    "machine learning": "AI ML",
+    "ai and ml": "AI ML",
+    "artificial intelligence and machine learning": "AI ML",
+    "data science": "Data Science",
+    "data analytics": "Data Science",
+
+    # --- Business / Systems ---
+    "computer science and business systems": "Business Systems",
+    "csbs": "Business Systems",
+    "business systems": "Business Systems",
+    "information systems": "Business Systems",
+
+    # --- Robotics / Automation (CS-related only) ---
+    "computer and robotics": "Robotics",
+    "robotics and automation": "Robotics",
+    "robotics engineering": "Robotics",
+
+    # --- Software / Computing Variants ---
+    "software engineering": "Software Engineering",
+    "software systems": "Software Engineering",
+
+    # --- Electronics with CS overlap ---
+    "electronics and computer engineering": "Electronics & Computing",
+    "electronics and computing": "Electronics & Computing",
+    "ece with computer science": "Electronics & Computing",
+    "electronics and communication with cs": "Electronics & Computing",
+    "electrical and computer engineering": "Electronics & Computing",
+    "electrical and electronics ": "Electrical & Electronics",
+    "electrical engineering": "Electrical Engineering",
+    "electronics engineering": "Electronics Engineering",
+    "communication engineering": "Communication Engineering",
+    "embedded systems": "Embedded Systems",
+    "embedded systems engineering": "Embedded Systems",
+    "chemical engineering": "Chemical Engineering",
+
+
+    # --- Cyber / Security ---
+    "cyber security": "Cyber Security",
+    "cybersecurity": "Cyber Security",
+    "information security": "Cyber Security"
+}
+
+def extract_branch_from_resume_lines(resume_lines):
+    # Join everything
+    full_text = " ".join(resume_lines).lower()
+
+    print("====== FULL TEXT ======")
+    print(full_text)
+
+    # HARD normalize (this is key)
+    full_text = re.sub(r'[^a-z0-9 ]+', ' ', full_text)  # remove symbols
+    full_text = re.sub(r'\s+', ' ', full_text)
+
+    if "artificial intelligence" in full_text and "machine learning" in full_text:
+        return "AI ML"
+
+    if "computer science" in full_text or "information science" in full_text or "cloud computing" in full_text or "computer engineering" in full_text or "cse" in full_text or "computer science and business systems" in full_text or "csbs" in full_text:
+        return "Computer Science"
+
+    if "information technology" in full_text or "information science" in full_text:
+        return "Information Technology"
+    
+    if "business systems" in full_text or "information systems" in full_text:
+        return "Business Systems"
+    
+    if "data science" in full_text :
+        return "Data Science"
+    
+    if "electronics and communication" in full_text:
+        return "Electrical & Communication"
+
+    if "electrical and electronics" in full_text or "electrical engineering" in full_text:
+        return "Electrical & Electronics"
+    
+    if "cyber security" in full_text or "cybersecurity" in full_text:
+        return "Cyber Security"
+    if "mechanical engineering" in full_text:
+        return "Mechanical Engineering" 
+    
+    if "civil engineering" in full_text:
+        return "Civil Engineering"
+    
+    
+    return "Any"
+
