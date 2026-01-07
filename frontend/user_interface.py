@@ -215,6 +215,7 @@ if button_clicked:
     else:
         with st.spinner("Analyzing your resume..."):
             name = student_data.process_all_resume_data(uploaded_file)
+            run_cpp()
             data = load_json()
         
         if data and name:
