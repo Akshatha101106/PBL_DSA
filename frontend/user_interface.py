@@ -8,7 +8,7 @@ import numpy as np
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from Python_Code import student_data
+from Python_Code import student_data , database
 
 def run_cpp():
     result = subprocess.run(
