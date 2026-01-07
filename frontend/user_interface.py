@@ -1,3 +1,4 @@
+
 import sys
 from pathlib import Path
 import subprocess
@@ -42,6 +43,7 @@ def get_eligibility_status(score):
         return "⚠️ Moderately Eligible"
     else:
         return "❌ Not Currently Eligible"
+
 
 def create_skills_chart(matched_skills, skill_gap):
     """Create a donut chart for skills match"""
@@ -153,8 +155,7 @@ st.markdown("""
         display: inline-block;
         background-color: #FF6B6B;
         color: white;
-        padding: 0.4rem
-        rem 0.9rem;
+        padding: 0.4rem 0.9rem;
         border-radius: 18px;
         margin: 0.3rem;
         font-size: 0.85rem;
@@ -180,6 +181,28 @@ st.markdown("""
         margin: 0.8rem 0;
         font-size: 0.95rem;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .resource-link {
+        display: block;
+        margin: 0.5rem 0;
+        padding: 0.6rem;
+        background-color: white;
+        border-radius: 5px;
+        border-left: 3px solid #5B8FF9;
+        transition: all 0.3s ease;
+    }
+    .resource-link:hover {
+        background-color: #f0f9ff;
+        transform: translateX(5px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .resource-link a {
+        color: #5B8FF9;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .resource-link a:hover {
+        color: #1e3c72;
     }
     /* Card styling */
     div[data-testid="stExpander"] {
@@ -309,14 +332,55 @@ if button_clicked:
                                     </div>
                                 """, unsafe_allow_html=True)
                         
-                        # AI Message below skills
+                        # Learning Resources Section (Full Width)
+                        if skill_gap:
+                            st.markdown("""
+                                <div class='skills-section' style='background-color: rgba(240, 249, 255, 0.95); margin-top: 1rem;'>
+                                    <div class='skills-header'>🎓 Recommended Learning Resources</div>
+                                    <p style='color: #666; font-size: 0.9rem; margin-bottom: 1rem;'>
+                                        Here are some free courses to help you develop the required skills:
+                                    </p>
+                            """, unsafe_allow_html=True)
+                            
+                            resources_found = False
+                            for skill in skill_gap:
+                                resources = database.get_skill_resources(skill)
+                                if resources:
+                                    resources_found = True
+                                    st.markdown(f"<strong style='color: #1e3c72; font-size: 1.05rem;'>📌 {skill}:</strong>", unsafe_allow_html=True)
+                                    for resource in resources:
+                                        st.markdown(f"""
+                                            <div style='margin: 0.5rem 0; padding: 0.7rem; background-color: white; 
+                                                 border-radius: 8px; border-left: 4px solid #5B8FF9;
+                                                 transition: all 0.3s ease;'>
+                                                <a href='{resource["url"]}' target='_blank' 
+                                                   style='color: #5B8FF9; text-decoration: none; font-weight: 500;
+                                                          display: flex; align-items: center;'>
+                                                    <span style='margin-right: 8px;'>▶️</span>
+                                                    <span>{resource["title"]}</span>
+                                                </a>
+                                            </div>
+                                        """, unsafe_allow_html=True)
+                                    st.markdown("<div style='margin-bottom: 0.8rem;'></div>", unsafe_allow_html=True)
+                            
+                            if not resources_found:
+                                st.markdown("""
+                                    <p style='color: #666; font-style: italic; margin: 0.5rem 0;'>
+                                        💡 No specific course recommendations available for these skills. 
+                                        Try searching on YouTube, Coursera, or Udemy!
+                                    </p>
+                                """, unsafe_allow_html=True)
+                            
+                            st.markdown("</div>", unsafe_allow_html=True)
+                        
+                        # AI Message below resources
                         if skill_gap:
                             skill_gap_text = ", ".join(skill_gap)
                             st.markdown(f"""
                                 <div class='ai-message'>
                                     🤖 <strong>AI Insight:</strong> To be fully eligible for this role at {company_name}, 
                                     focus on developing: <strong>{skill_gap_text}</strong>. 
-                                    Consider online courses or projects to bridge these gaps!
+                                    Consider the courses above or build projects to bridge these gaps!
                                 </div>
                             """, unsafe_allow_html=True)
                         
@@ -348,7 +412,10 @@ if button_clicked:
 # Footer
 st.markdown("---")
 st.markdown("""
-    <div style='text-align: center; color: #666; padding: 1rem;'>
-        <p>💡 Tip: Keep your resume updated with your latest skills and projects for better matches!</p>
+    <div style='text-align: center; color: white; padding: 1rem;'>
+        <p style='margin: 0;'>💡 <strong>Tip:</strong> Keep your resume updated with your latest skills and projects for better matches!</p>
+        <p style='margin: 0.5rem 0 0 0; font-size: 0.85rem; opacity: 0.8;'>
+            All course recommendations are from FreeCodeCamp and other free resources on YouTube
+        </p>
     </div>
 """, unsafe_allow_html=True)
