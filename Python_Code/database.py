@@ -339,3 +339,143 @@ def extract_branch_from_resume_lines(resume_lines):
     
     return "Any"
 
+def get_skill_resources(skill: str) -> list:
+    """
+    Returns course links for a given skill.
+    Each resource is a dict with 'title' and 'url'
+    """
+    resource_map = {
+        "SQL and NoSQL": [
+            {"title": "SQL Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY"},
+            {"title": "NoSQL Database Tutorial", "url": "https://www.youtube.com/watch?v=0buKQHokLK8"}
+        ],
+        "SQL": [
+            {"title": "SQL Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY"},
+            {"title": "SQL for Beginners", "url": "https://www.youtube.com/watch?v=7S_tz1z_5bA"}
+        ],
+        "NoSQL": [
+            {"title": "NoSQL Database Tutorial", "url": "https://www.youtube.com/watch?v=0buKQHokLK8"}
+        ],
+        "Git": [
+            {"title": "Git & GitHub Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=RGOj5yH7evk"},
+            {"title": "Git for Beginners", "url": "https://www.youtube.com/watch?v=8JJ101D3knE"}
+        ],
+        "Power BI": [
+            {"title": "Power BI Full Course", "url": "https://www.youtube.com/watch?v=AGrl-H87pRU"},
+            {"title": "Power BI Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=77vXdROOY_g"}
+        ],
+        "JavaScript": [
+            {"title": "JavaScript Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg"},
+            {"title": "JavaScript for Beginners", "url": "https://www.youtube.com/watch?v=W6NZfCO5SIk"}
+        ],
+        "Python": [
+            {"title": "Python for Beginners - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=rfscVS0vtbw"},
+            {"title": "Python Full Course", "url": "https://www.youtube.com/watch?v=8DvywoWv6gI"}
+        ],
+        "React": [
+            {"title": "React JS Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=bMknfKXIFA8"},
+            {"title": "React Tutorial", "url": "https://www.youtube.com/watch?v=SqcY0GlETPk"}
+        ],
+        "Angular": [
+            {"title": "Angular Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=3qBXWUpoPHo"},
+            {"title": "Angular Full Course", "url": "https://www.youtube.com/watch?v=2OHbjep_WjQ"}
+        ],
+        "Node.js": [
+            {"title": "Node.js Full Course", "url": "https://www.youtube.com/watch?v=Oe421EPjeBE"},
+            {"title": "Node.js Tutorial", "url": "https://www.youtube.com/watch?v=TlB_eWDSMt4"}
+        ],
+        "MongoDB": [
+            {"title": "MongoDB Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=c2M-rlkkT5o"},
+            {"title": "MongoDB Crash Course", "url": "https://www.youtube.com/watch?v=ofme2o29ngU"}
+        ],
+        "Docker": [
+            {"title": "Docker Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=pTFZFxd4hOI"},
+            {"title": "Docker for Beginners", "url": "https://www.youtube.com/watch?v=fqMOX6JJhGo"}
+        ],
+        "Kubernetes": [
+            {"title": "Kubernetes Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=X48VuDVv0do"},
+            {"title": "Kubernetes Tutorial", "url": "https://www.youtube.com/watch?v=d6WC5n9G_sM"}
+        ],
+        "AWS": [
+            {"title": "AWS Certified Solutions Architect", "url": "https://www.youtube.com/watch?v=Ia-UEYYR44s"},
+            {"title": "AWS Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=k1RI5locZE4"}
+        ],
+        "Machine Learning": [
+            {"title": "Machine Learning Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=Gv9_4yMHFhI"},
+            {"title": "ML for Beginners", "url": "https://www.youtube.com/watch?v=i_LwzRVP7bg"}
+        ],
+        "Data Structures": [
+            {"title": "Data Structures Full Course", "url": "https://www.youtube.com/watch?v=B31LgI4Y4DQ"},
+            {"title": "Data Structures and Algorithms", "url": "https://www.youtube.com/watch?v=8hly31xKli0"}
+        ],
+        "Java": [
+            {"title": "Java Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=xk4_1vDrzzo"},
+            {"title": "Java Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=eIrMbAQSU34"}
+        ],
+        "C++": [
+            {"title": "C++ Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=vLnPwxZdW4Y"},
+            {"title": "C++ Tutorial", "url": "https://www.youtube.com/watch?v=8jLOx1hD3_o"}
+        ],
+        "C": [
+            {"title": "C Programming Full Course", "url": "https://www.youtube.com/watch?v=KJgsSFOSQv0"},
+            {"title": "C Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=87SH2Cn0s9A"}
+        ],
+        "HTML": [
+            {"title": "HTML Full Course", "url": "https://www.youtube.com/watch?v=pQN-pnXPaVg"},
+            {"title": "HTML Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=qz0aGYrrlhU"}
+        ],
+        "CSS": [
+            {"title": "CSS Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=1Rs2ND1ryYc"},
+            {"title": "CSS Tutorial", "url": "https://www.youtube.com/watch?v=yfoY53QXEnI"}
+        ],
+        "PHP": [
+            {"title": "PHP Full Course", "url": "https://www.youtube.com/watch?v=OK_JCtrrv-c"},
+            {"title": "PHP Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=a7_WFUlFS94"}
+        ],
+        "Django": [
+            {"title": "Django Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=F5mRW0jo-U4"},
+            {"title": "Django Tutorial", "url": "https://www.youtube.com/watch?v=rHux0gMZ3Eg"}
+        ],
+        "Flask": [
+            {"title": "Flask Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=Z1RJmh_OqeA"},
+            {"title": "Flask for Beginners", "url": "https://www.youtube.com/watch?v=dam0GPOAvVI"}
+        ],
+        "Spring Boot": [
+            {"title": "Spring Boot Tutorial", "url": "https://www.youtube.com/watch?v=9SGDpanrc8U"},
+            {"title": "Spring Boot Full Course", "url": "https://www.youtube.com/watch?v=vtPkZShrvXQ"}
+        ],
+        "MySQL": [
+            {"title": "MySQL Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY"},
+            {"title": "MySQL Tutorial", "url": "https://www.youtube.com/watch?v=7S_tz1z_5bA"}
+        ],
+        "PostgreSQL": [
+            {"title": "PostgreSQL Tutorial", "url": "https://www.youtube.com/watch?v=qw--VYLpxG4"},
+            {"title": "PostgreSQL Course", "url": "https://www.youtube.com/watch?v=SpfIwlAYaKk"}
+        ],
+        "Redux": [
+            {"title": "Redux Tutorial - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=CVpUuw9XSjY"},
+            {"title": "Redux for Beginners", "url": "https://www.youtube.com/watch?v=poQXNp9ItL4"}
+        ],
+        "Vue.js": [
+            {"title": "Vue.js Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=FXpIoQ_rT_c"},
+            {"title": "Vue.js Tutorial", "url": "https://www.youtube.com/watch?v=1GNsWa_EZdw"}
+        ],
+        "TypeScript": [
+            {"title": "TypeScript Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=30LWjhZzg50"},
+            {"title": "TypeScript Tutorial", "url": "https://www.youtube.com/watch?v=BwuLxPH8IDs"}
+        ],
+        "Tableau": [
+            {"title": "Tableau Full Course", "url": "https://www.youtube.com/watch?v=aHaOIvR00So"},
+            {"title": "Tableau Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=jj6-0cvcNEA"}
+        ],
+        "Excel": [
+            {"title": "Excel Full Course - FreeCodeCamp", "url": "https://www.youtube.com/watch?v=Vl0H-qTclOg"},
+            {"title": "Excel Tutorial", "url": "https://www.youtube.com/watch?v=rwbho0CgEAE"}
+        ],
+        "R": [
+            {"title": "R Programming Tutorial", "url": "https://www.youtube.com/watch?v=_V8eKsto3Ug"},
+            {"title": "R for Beginners", "url": "https://www.youtube.com/watch?v=fDRa82lxzaU"}
+        ]
+    }
+    
+    return resource_map.get(skill, [])
